@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-6">
+    <form #f="ngForm" (ngSubmit)="onSave(f.value)">
+
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input  #title="ngModel" [(ngModel)]="productToUpdate.title" name="title" id="title" type="text" class="form-control" required>
+      </div>
+
+      <div *ngIf="title.touched && title.invalid" class="alert alert-danger">
+        Title cannot be empty.
+      </div>
+
+
+      <div class="form-group ">
+        <label for="price">Price</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+          </div>
+          <input [(ngModel)]="productToUpdate.price" #price="ngModel" name="price" id="price" type="number" class="form-control" required [min]="0">
+        </div>
+      </div>
+      
+      <div *ngIf="price.touched && price.invalid" class="alert alert-danger">
+        <div *ngIf="price.errors.min">Price should be 0 or greater.</div>  
+        <div *ngIf="price.errors.required">Price cannot be empty.</div>  
+    
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select [(ngModel)]="productToUpdate.category" #category="ngModel" name="category" id="category"  class="form-control" required> 
+          <option value=""></option>
+          <option  *ngFor="let c of categories$ | async"  [value]="c.$key">
+            {{ c.name }}
+          </option>
+        </select>
+      </div>
+
+      <div *ngIf="category.touched && category.invalid" class="alert alert-danger">
+          Category cannot be empty.
+      </div>
+
+
+      <div class="form-group">
+        <label for="imageUrl">Image URL</label>
+        <input [(ngModel)]="productToUpdate.imageUrl" #imageUrl="ngModel" name="imageUrl" id="imageUrl" type="text" class="form-control" required url>
+      </div>
+
+      <div *ngIf="imageUrl.touched && imageUrl.invalid" class="alert alert-danger">
+        <div *ngIf="imageUrl.errors.required">Image URL cannot be empty.</div>  
+        <div *ngIf="imageUrl.errors.url">Please provide a valid URL.</div>      
+      </div>
+
+      <button class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-danger" (click)="removeProduct()">Remove</button>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <product-card [product]="productToUpdate" [show-action-button]="false"></product-card>
+    
+    <!-- <div class="card" style="width: 18rem;"  *ngIf="productToUpdate.title">
+      <img class="card-img-top" [src]="imageUrl.value" *ngIf="productToUpdate.imgUrl" >
+      <div class="card-body">
+        <h5 class="card-title">{{productToUpdate.title}}</h5>
+        <p class="card-text">{{productToUpdate.price | currency}}</p>
+        
+      </div>
+    </div> -->
+  </div>
+</div>

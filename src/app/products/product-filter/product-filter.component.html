@@ -1,0 +1,22 @@
+<div class="list-group sticky-top " style="overflow-wrap:break-word">
+    
+    <a
+      class="list-group-item-action list-group-item"
+      [class.active]="!selectedCategory"
+      routerLink="/"
+    >
+      
+      All Categories
+    </a>
+    <a 
+      *ngFor="let c of categoryList$ | async" 
+      class="list-group-item list-group-item-action"
+      routerLink="/"
+      [queryParams]="{ category: c.$key }"
+      [class.active]="selectedCategory === c.$key"
+      style="overflow-wrap:break-word"
+      
+    >
+      {{ c.name }}
+    </a>
+  </div>
